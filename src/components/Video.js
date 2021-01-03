@@ -25,11 +25,15 @@ function Video() {
     }, [])
 
     const startVideo = () => {
-        navigator.getUserMedia(
-            { video : {} },
-            stream => videoRef.current.srcObject = stream,
-            err => console.error(err)
-        )
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia(
+                { video : {} },
+                stream => videoRef.current.srcObject = stream,
+                err => console.error(err)
+            )
+        } else {
+            console.log("getUserMedia not supported");
+        }
     }
 
     const handleVideoOnPlay = () => {
@@ -58,7 +62,7 @@ function Video() {
 
     return (
     <div className="main">
-        <span>{init ? 'Initializing' : 'Ready'}</span>
+        <span>{init ? 'Initializing...' : 'Ready'}</span>
         <div className="videoDiv">
             <video ref={videoRef} autoPlay muted width={videoW} height={videoH} onPlay={handleVideoOnPlay} />
             <canvas ref={canvasRef} />
