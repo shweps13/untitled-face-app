@@ -10,6 +10,23 @@ function Video() {
     let videoW = 480;
     let videoH = 640;
 
+    useEffect(() => {
+        const loadModels = async () => {
+            const MODEL_URL = process.env.PUBLIC_URL + '/models';
+            setInit(true);
+            Promise.all([
+                faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+                faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+                faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+                faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+            ]).then(startVideo);
+        }    
+        loadModels();    
+    }, [])
+
+    const startVideo = () => {
+
+    }
 
     return (
     <div className="App-header">
