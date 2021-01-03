@@ -7,8 +7,8 @@ function Video() {
     const videoRef = useRef();
     const canvasRef = useRef();
 
-    let videoW = 480;
-    let videoH = 640;
+    let videoW = 720;
+    let videoH = 560;
 
     useEffect(() => {
         const loadModels = async () => {
@@ -37,27 +37,29 @@ function Video() {
             if (init) {
                 setInit(false);
             }
+            
             canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current);
             const displaySize = {
                 width: videoW,
                 height: videoH
             }
 
+            faceapi.matchDimensions(canvasRef.current, displaySize)
+
             const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
             const resizedDetections = faceapi.resizeResults(detections, displaySize);
             canvasRef.current.getContext('2d').clearRect(0, 0, videoW, videoH);
-            faceapi.draw.drawDetections(canvasRef.current, detections);
-            faceapi.draw.drawFaceLandmarks(canvasRef.current, detections);
-            faceapi.draw.drawFaceExpressions(canvasRef.current, detections);
-            console.log(detections)
+            faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+            faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+            faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
 
-        }, 100)
+        }, 1000)
     }
 
     return (
-    <div className="App-header">
-        <span>{init ? 'Initializing' : 'Ready'}</span>
-        <div>
+    <div className="main">
+        {/* <span>{init ? 'Initializing' : 'Ready'}</span> */}
+        <div className="videoDiv">
             <video ref={videoRef} autoPlay muted width={videoW} height={videoH} onPlay={handleVideoOnPlay} />
             <canvas ref={canvasRef} />
         </div>
