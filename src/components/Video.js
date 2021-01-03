@@ -37,8 +37,18 @@ function Video() {
             if (init) {
                 setInit(false);
             }
+            canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current);
+            const displaySize = {
+                width: videoW,
+                height: videoH
+            }
+
             const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
-        
+            const resizedDetections = faceapi.resizeResults(detections, displaySize);
+            canvasRef.current.getContext('2d').clearRect(0, 0, videoW, videoH);
+            faceapi.draw.drawDetections(canvasRef.current, detections);
+            faceapi.draw.drawFaceLandmarks(canvasRef.current, detections);
+            faceapi.draw.drawFaceExpressions(canvasRef.current, detections);
             console.log(detections)
 
         }, 100)
