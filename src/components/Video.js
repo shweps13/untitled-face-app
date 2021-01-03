@@ -25,7 +25,7 @@ function Video() {
     }, [])
 
     const startVideo = () => {
-        if (navigator.getUserMedia) {
+        if (navigator.getUserMedia && typeof navigator.getUserMedia === 'function') {
             navigator.getUserMedia(
                 { video : {} },
                 stream => videoRef.current.srcObject = stream,
@@ -57,12 +57,12 @@ function Video() {
             faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
             faceapi.draw.drawFaceExpressions(canvasRef.current, resizedDetections);
 
-        }, 1000)
+        }, 100)
     }
 
     return (
     <div className="main">
-        <span>{init ? 'Initializing...' : 'Ready'}</span>
+        <span>{init ? 'Initializing...' : ''}</span>
         <div className="videoDiv">
             <video ref={videoRef} autoPlay muted width={videoW} height={videoH} onPlay={handleVideoOnPlay} />
             <canvas ref={canvasRef} />
