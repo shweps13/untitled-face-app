@@ -25,14 +25,21 @@ function Video() {
     }, [])
 
     const startVideo = () => {
-
+        navigator.getUserMedia(
+            { video : {} },
+            stream => videoRef.current.srcObject = stream,
+            err => console.error(err)
+            
+        )
     }
 
     return (
     <div className="App-header">
         <span>{init ? 'Initializing' : 'Ready'}</span>
-        <video ref={videoRef} autoPlay muted width={videoW} height={videoH} />
-        <canvas ref={canvasRef} />
+        <div>
+            <video ref={videoRef} autoPlay muted width={videoW} height={videoH} />
+            <canvas ref={canvasRef} />
+        </div>
     </div>
     )
 }
