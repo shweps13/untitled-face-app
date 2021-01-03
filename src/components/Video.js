@@ -29,15 +29,26 @@ function Video() {
             { video : {} },
             stream => videoRef.current.srcObject = stream,
             err => console.error(err)
-            
         )
+    }
+
+    const handleVideoOnPlay = () => {
+        setInterval(async() => {
+            if (init) {
+                setInit(false);
+            }
+            const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+        
+            console.log(detections)
+
+        }, 100)
     }
 
     return (
     <div className="App-header">
         <span>{init ? 'Initializing' : 'Ready'}</span>
         <div>
-            <video ref={videoRef} autoPlay muted width={videoW} height={videoH} />
+            <video ref={videoRef} autoPlay muted width={videoW} height={videoH} onPlay={handleVideoOnPlay} />
             <canvas ref={canvasRef} />
         </div>
     </div>
