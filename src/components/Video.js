@@ -58,7 +58,7 @@ function Video() {
 
     return (
     <div className="main">
-        {/* <span>{init ? 'Initializing' : 'Ready'}</span> */}
+        <span>{init ? 'Initializing' : 'Ready'}</span>
         <div className="videoDiv">
             <video ref={videoRef} autoPlay muted width={videoW} height={videoH} onPlay={handleVideoOnPlay} />
             <canvas ref={canvasRef} />
